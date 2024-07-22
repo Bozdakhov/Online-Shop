@@ -5,40 +5,48 @@
                 <div class="col-md-5 mt-3">
                     <div class="bg-white border" wire:ignore>
                         @if (!empty($product->productImages))
-                                <div class="exzoom" id="exzoom">
-                                    <div class="exzoom_img_box">
-                                        <ul class='exzoom_img_ul'>
-                                            @foreach ($product->productImages as $itemMedia)
+                            <div class="exzoom" id="exzoom">
+                                <div class="exzoom_img_box">
+                                    <ul class='exzoom_img_ul'>
+                                        @foreach ($product->productImages as $itemMedia)
+                                            @if (in_array(pathinfo($itemMedia->image, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
                                                 <li>
-                                                    @if (in_array(pathinfo($itemMedia->image, PATHINFO_EXTENSION), ['mp4', 'webm', 'oga', 'ogx']))
-                                                        <video controls class="w-100" alt="Video">
-                                                            <source src="{{ asset( $itemMedia->image) }}" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                        </video>
-                                                    @else
-                                                        <img src="{{ asset($itemMedia->image) }}"
-                                                            style="margin-top: 50.8817px; width: 328px; height: 100%" />
-                                                    @endif
+                                                    <img src="{{ asset($itemMedia->image) }}"
+                                                        style="margin-top: 50.8817px; width: 328px; height: 100%" />
                                                 </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <p class="exzoom_btn">
-                                        <a href="javascript:void(0);" class="exzoom_prev_btn">
-                                            <i class="fa fa-angle-left"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" class="exzoom_next_btn">
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </p>
+                                            @endif
+                                            <li>
+                                                <video controls class="w-100" alt="Video">
+                                                    <source src="{{ asset($itemMedia->image) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </div>
+                                <p class="exzoom_btn">
+                                    <a href="javascript:void(0);" class="exzoom_prev_btn">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" class="exzoom_next_btn">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
                         @else
                             @lang('image_no')
                         @endif
+
+
+                        <div class="mt-3">
+                            @foreach ($product->productImages as $itemMedia)
+                                @if (in_array(pathinfo($itemMedia->image, PATHINFO_EXTENSION), ['mp4', 'webm', 'oga', 'ogx', 'ogm']))
+                                @endif
+                            @endforeach
+                        </div>
+
                     </div>
                 </div>
-                             
-                
                 <div class="col-md-7 mt-3">
                     <div class="product-view">
                         <h4 class="product-name">
@@ -49,7 +57,8 @@
                         <div>
                             @if ($product->selling_price > 0)
                                 <h5>{{ number_format($product->selling_price) }} UZS</h5>
-                                <h6 class="text-muted ml-2"><del>{{ number_format($product->original_price) }} UZS</del></h6>
+                                <h6 class="text-muted ml-2"><del>{{ number_format($product->original_price) }} UZS</del>
+                                </h6>
                             @else
                                 <h5 class="ml-2">{{ number_format($product->original_price) }} UZS</h5>
                             @endif
@@ -120,6 +129,18 @@
                                 {!! $product->small_description !!}
                             </p>
                         </div>
+                        @foreach ($product->productImages as $itemMedia)
+                            @if (in_array(pathinfo($itemMedia->image, PATHINFO_EXTENSION), ['mp4', 'webm', 'ogx', 'oga']))
+                            @endif
+
+                            <li>
+                                <video controls class="w-100" alt="Video">
+                                    <source src="{{ asset($itemMedia->image) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </li>
+                        @endforeach
+
 
                     </div>
                 </div>
@@ -180,10 +201,15 @@
                                             </h5>
                                             <div class="d-flex align-items-center  mt-2">
                                                 @if ($relatedProductItem->selling_price > 0)
-                                                    <h6>{{ number_format($relatedProductItem->selling_price) }} UZS</h6>
-                                                     <h6 class="text-muted ml-3"><del>{{ number_format($relatedProductItem->original_price) }} UZS</del></h6>
+                                                    <h6>{{ number_format($relatedProductItem->selling_price) }} UZS
+                                                    </h6>
+                                                    <h6 class="text-muted ml-3">
+                                                        <del>{{ number_format($relatedProductItem->original_price) }}
+                                                            UZS</del></h6>
                                                 @else
-                                                     <h6 class="ml-2">{{ number_format($relatedProductItem->original_price) }} UZS</h6>
+                                                    <h6 class="ml-2">
+                                                        {{ number_format($relatedProductItem->original_price) }} UZS
+                                                    </h6>
                                                 @endif
                                             </div>
                                         </div>
@@ -243,10 +269,15 @@
                                                 </h5>
                                                 <div class="d-flex align-items-center  mt-2">
                                                     @if ($relatedProductItem->selling_price > 0)
-                                                        <h6>{{ number_format($relatedProductItem->selling_price) }} UZS</h6>
-                                                         <h6 class="text-muted ml-3"><del>{{ number_format($relatedProductItem->original_price) }} UZS</del></h6>
+                                                        <h6>{{ number_format($relatedProductItem->selling_price) }} UZS
+                                                        </h6>
+                                                        <h6 class="text-muted ml-3">
+                                                            <del>{{ number_format($relatedProductItem->original_price) }}
+                                                                UZS</del></h6>
                                                     @else
-                                                         <h6 class="ml-2">{{ number_format($relatedProductItem->original_price) }} UZS</h6>
+                                                        <h6 class="ml-2">
+                                                            {{ number_format($relatedProductItem->original_price) }}
+                                                            UZS</h6>
                                                     @endif
                                                 </div>
                                             </div>
@@ -274,9 +305,7 @@
 @push('scripts')
     <script>
         $(function() {
-
             $("#exzoom").exzoom({
-
                 // thumbnail nav options
                 "navWidth": 60,
                 "navHeight": 60,
@@ -285,7 +314,6 @@
                 "navBorder": 1,
                 "autoPlay": false,
                 "autoPlayTimeout": 2000
-
             });
             $('.four-carousel').owlCarousel({
                 loop: true,
@@ -304,7 +332,25 @@
                     }
                 }
             });
-
         });
     </script>
 @endpush
+
+@php
+    function containsVideo($productImages)
+    {
+        foreach ($productImages as $itemMedia) {
+            if (isVideo($itemMedia->image)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function isVideo($imagePath)
+    {
+        $videoExtensions = ['mp4', 'webm', 'oga', 'ogx', 'ogm'];
+        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+        return in_array($extension, $videoExtensions);
+    }
+@endphp

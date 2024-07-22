@@ -12,7 +12,6 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) { // Updated table name to 'settings'
             $table->id();
-
             $table->string('website_name')->nullable();
             $table->string('website_url')->nullable();
             $table->string('page_title')->nullable();
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings'); // Updated table name to 'settings'
+        Schema::dropIfExists('settings');
     }
 };

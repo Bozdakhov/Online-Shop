@@ -58,7 +58,7 @@ class ProductController extends Controller
         $small_description = $request->small_description;
         $description = $request->description;
         $original_price = $request->original_price;
-        $selling_price = $request->has('selling_price') ? $request->selling_price : null; 
+        $selling_price = $request->has('selling_price') ? $request->selling_price : null;
         $quantity = $request->quantity;
         $trending = $request->trending == true ? '1' : '0';
         $featured = $request->featured == true ? '1' : '0';
@@ -86,25 +86,25 @@ class ProductController extends Controller
         $product->save();
 
         if ($request->hasFile('image')) {
-    $uploadPath = 'uploads/products/';
-    $i = 1;
-    foreach ($request->file('image') as $file) {
-        $extension = $file->getClientOriginalExtension();
-        $filename = time() . $i++ . '.' . $extension;
-        $file->move($uploadPath, $filename);
-        $finalFilePath = $uploadPath . $filename;
-        if (in_array($extension, ['jpeg', 'png', 'jpg', 'gif', 'svg'])) {
-            // This is an image
-            $product->productImages()->create([
-                'product_id' => $product->id,
-                'image' => $finalFilePath,
-            ]);
-        } elseif (in_array($extension, ['mp4', 'ogx', 'oga', 'ogv', 'ogg', 'webm'])) {
-            $product->video_path = $finalFilePath;
-            $product->save();
+            $uploadPath = 'uploads/products/';
+            $i = 1;
+            foreach ($request->file('image') as $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . $i++ . '.' . $extension;
+                $file->move($uploadPath, $filename);
+                $finalFilePath = $uploadPath . $filename;
+                if (in_array($extension, ['jpeg', 'png', 'jpg', 'gif', 'svg'])) {
+                    // This is an image
+                    $product->productImages()->create([
+                        'product_id' => $product->id,
+                        'image' => $finalFilePath,
+                    ]);
+                } elseif (in_array($extension, ['mp4', 'ogx', 'oga', 'ogv', 'ogg', 'webm'])) {
+                    $product->video_path = $finalFilePath;
+                    $product->save();
+                }
+            }
         }
-    }
-}
 
 
         if ($request->colors) {
